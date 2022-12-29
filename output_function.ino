@@ -19,21 +19,21 @@ void initPinOutput(){
 
 
 void clearPowerOutput(){
-	tabletSet(false);
-	fanSet(false);
-	torchSet(false);
-	cameratSet(false);
+	tabletOn(false);
+	fanOn(false);
+	highLightOn(false);
+	cameraOn(false);
 }
 
-void blinkSet(bool set){
-  if(set){
+  void blinkSet(bool set){
+    if(set){
     digitalWrite(LED_BUILTIN, HIGH);
   } else {
     digitalWrite(LED_BUILTIN, LOW);
   }
 }
 
-void tabletSet(bool set){
+void tabletOn(bool set){
   if(set){
     digitalWrite(TABLET_PIN, LOW);
   } else {
@@ -41,7 +41,7 @@ void tabletSet(bool set){
   }
 }
 
-void cameratSet(bool set){
+void cameraOn(bool set){
   if(set){
     digitalWrite(CAMERA_PIN, HIGH);
   } else {
@@ -49,7 +49,7 @@ void cameratSet(bool set){
   }
 }
 
-void torchSet(bool set){
+void highLightOn(bool set){
   if(set){
     digitalWrite(TORCH_PIN, LOW);
   } else {
@@ -57,7 +57,7 @@ void torchSet(bool set){
   }
 }
 
-void fanSet(bool set){
+void fanOn(bool set){
   if(set){
     digitalWrite(FAN_PIN, LOW);
   } else {
@@ -81,10 +81,10 @@ void setFanBit(bool set, int bit){
 
   bit &= MASK_FAN_BIT;
 
-  fanSet(bitFan != 0);
+  fanOn(bitFan != 0);
 }
 
-void setFanBitFromPILoop(bool set){
+void fanOnPiLoop(bool set){
   setFanBit(set, BIT_GENERAL_LOOP);
 }
 
@@ -97,7 +97,7 @@ void busSet(bool set){
 }
 
 void disableWorkOutput(){
-	tabletSet(false);
-	torchSet(false);
-	cameratSet(false);
+	tabletOn(false);
+	highLightOn(false);
+	cameraOn(false);
 }

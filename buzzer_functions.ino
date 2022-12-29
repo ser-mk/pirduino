@@ -10,47 +10,47 @@ const int FREQ_SIGNAL_WORK_START = 500;
 const int FREQ_SIGNAL_WORK_STOP = 300;
 
 
-void stopBuzz(){
+void buzzSignalStop(){
 	noTone(BUZZER_PIN);
 	pinMode(BUZZER_PIN, INPUT);
 }
 
 void buzzPowerError(){
-	stopBuzz();
+	buzzSignalStop();
 	tone(BUZZER_PIN, FREQ_POWER_ERROR);
 }
 
 void buzzNoTempSensor(){
-	stopBuzz();
+	buzzSignalStop();
 	tone(BUZZER_PIN, FREQ_NO_TEMPERATURE_SENSOR);
 }
 
 void buzzMaxTemp(){
-	stopBuzz();
+	buzzSignalStop();
 	tone(BUZZER_PIN, FREQ_MAX_TEMPERATURE);
 }
 
 void buzzMinTemp(){
-	stopBuzz();
+	buzzSignalStop();
 	tone(BUZZER_PIN, FREQ_MIN_TEMPERATURE);
 }
 
 void buzzStartWork(){
-	stopBuzz();
+	buzzSignalStop();
 	tone(BUZZER_PIN, FREQ_START_WORK);
 }
 
 void buzzCameraReset(){
-	stopBuzz();
+	buzzSignalStop();
 	tone(BUZZER_PIN, FREQ_CAMERA_RESET);
 }
 
 void buzzSignalStart(){
-	stopBuzz();
+	buzzSignalStop();
 	tone(BUZZER_PIN, FREQ_SIGNAL_WORK_START);
 }
 
 void buzzSignalStop(){
-	stopBuzz();
+	buzzSignalStop();
 	tone(BUZZER_PIN, FREQ_SIGNAL_WORK_STOP);
 }

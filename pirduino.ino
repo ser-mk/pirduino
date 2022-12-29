@@ -1,9 +1,8 @@
 #include <OneWire.h>
 
 void setup() {
-  //start serial connection
   buzzStartWork();
-  
+  //start serial connection
   Serial.begin(9600);
   
   initPinOutput();
@@ -12,7 +11,7 @@ void setup() {
   setupAnalogandIdle();
 
   delay(400);
-  stopBuzz();
+  buzzSignalStop();
   
   firstPowerTest();
 
@@ -26,20 +25,20 @@ void firstPowerTest(){
 
 	_checkExceptionPowerVoltage();
 
-	tabletSet(true);
-	cameratSet(true);
+	tabletOn(true);
+	cameraOn(true);
 	delay(1000);
-	torchSet(true);
+	highLightOn(true);
 	delay(1000);
-	fanSet(true);
+	fanOn(true);
 	delay(5000);
 
 	_checkExceptionPowerVoltage();
 
-	cameratSet(false);
-	fanSet(false);
+	cameraOn(false);
+	fanOn(false);
 	delay(500);
-	torchSet(false);
+	highLightOn(false);
 	delay(20);
 
 	_checkExceptionPowerVoltage();
@@ -47,31 +46,32 @@ void firstPowerTest(){
 	Serial.println(F("first test done!"));
 }
 
-static const unsigned int TIMEOUT_MS_FAN_OFF = 1000;
-static const unsigned long TIMEOUT_CAPTURE_OFF = 100000;
+static const unsigned int TIMEOUT_MS_FAN_OFF = 10000;
+static const unsigned long TIMEOUT_CAPTURE_OFF = 60000;
 
 void loop(){
 
-	tabletSet(true);
+	tabletOn(true);
 
 	Serial.println(F("listen START signal:"));
 
+	// the program first polls the motion sensors to gather information about the presence of humans in the area
 	while(seriouslyCheckStartSignaledSensor() == false){
-		if(_checkExceptionPowerVoltage()) return;
+		if(_checkExceptionPowerVoltage()) return; // check arduino's power
 		delay(1);
-		if(_checkTemperature(20*1000)) return;
+		if(_checkTemperature(20*1000)) return; // check pirduino's temp
 	}
 
 	Serial.println(F("Turn On all:"));
 
-	setFanBitFromPILoop(true);
-	torchSet(true);
+	fanOnPiLoop(true);	// turn on the fan
+	highLightOn(true);
 
 	buzzSignalStart();
 	delay(50);
-	stopBuzz();
+	buzzSignalStop();
 
-	cameratSet(true);
+	cameraOn(true);
 
 	delay(5000);
 
@@ -86,9 +86,9 @@ void loop(){
 
 	buzzSignalStop();
 	delay(50);
-	stopBuzz();
+	buzzSignalStop();
 
-	Serial.println(F("wait one minute..."));
+	Serial.println(F("hold on 100 seconds. Wait new gamer. If they do, we can get back to playing the game as fast as possible. There's no need to restart the system."));
 
 	const unsigned long end_time_wait = millis() + TIMEOUT_CAPTURE_OFF;
 
@@ -98,15 +98,18 @@ void loop(){
 		if(_checkTemperature(1000)) return;
 		waitRestartCamera();
 		if(seriouslyCheckStartSignaledSensor()){
-			Serial.println(F("find start signal, goto start"));
+			Serial.println(F("find starting signal, goto start of the loop"));
 			return;
 		}
 	}
 
-	Serial.println(F("Turn Off cam and torch:"));
+	Serial.println(F("No new gamer. Turn Off cam and highLight(LED):"));
 
-	cameratSet(false);
-	torchSet(false);
+	cameraOn(false);
+	highLightOn(false);
+
+	Serial.print(F("FAN works 10 seconds for cooling"));
+
 
 	int mi = 0;
 	for( ; mi < TIMEOUT_MS_FAN_OFF; mi++){
@@ -118,11 +121,11 @@ void loop(){
 		if(_checkExceptionPowerVoltage()) return;
 	}
 
-	Serial.print(F("TIMEOUT FAN : "));
+	Serial.print(F("TIMEOUT FAN end: "));
 	Serial.println(mi);
 
 	if(mi >= TIMEOUT_MS_FAN_OFF){
 		Serial.println(F("Fan Off"));
-		setFanBitFromPILoop(false);
+		fanOnPiLoop(false);
 	}
 }

@@ -5,7 +5,7 @@ void errorSignalBadPower(){
 			blinkSet(true);
 
 			delay(1111);
-			stopBuzz();
+			buzzSignalStop();
 			blinkSet(false);
 
 			delay(1111);
@@ -29,14 +29,14 @@ bool _checkExceptionPowerVoltage(){
 void signalingNoTemperatureSensor(){
 	disableWorkOutput();
 
-	fanSet(true);
+	fanOn(true);
 
 	buzzNoTempSensor();
 	blinkSet(true);
 
 	delay(500);
 
-	stopBuzz();
+	buzzSignalStop();
 	blinkSet(false);
 }
 
@@ -48,20 +48,20 @@ void signalingMinTemperature(){
 
 	blinkSet(false);
 
-	stopBuzz();
+	buzzSignalStop();
 }
 
 
 void signalingMaxTemperature(){
 	disableWorkOutput();
 
-	fanSet(true);
+	fanOn(true);
 
 	buzzMaxTemp();
 	blinkSet(false);
 
 	delay(150);
 
-	stopBuzz();
+	buzzSignalStop();
 	blinkSet(true);
 }

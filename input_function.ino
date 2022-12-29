@@ -46,19 +46,19 @@ void waitRestartCamera(){
 
 	Serial.println(F("Restart camera -"));
 	buzzCameraReset();
-	cameratSet(false);
+	cameraOn(false);
 	delay(DELAY_MS_SIGNAL_DISABLE_CAMERA);
-	stopBuzz();
+	buzzSignalStop();
 	delay(DELAY_MS_REMAINDER_DISABLE_CAMERA);
 	Serial.println(F("Ensable camera again +"));
-	cameratSet(true);
+	cameraOn(true);
 }
 
 
 const int TIMES_CHECK_SIGNAL_VALUE = 10;
 const int THRESHOLD_START_SIGNALED = 7;
 const int THRESHOLD_STOP_SIGNALED = 2;
-const int TIMEOUT_CHECK_SENSOR = 10;
+const int TIMEOUT_CHECK_SENSOR = 500;
 
 
 
